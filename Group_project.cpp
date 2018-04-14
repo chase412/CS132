@@ -3,9 +3,14 @@
  * Donald Hall
  * Levi Coffman
  *
- * Homework Assignment #9 (Group Project)
- * Due: 8/16/2017
- * Time Spent: 10 minutes (on this part)
+
+ * CS 132
+ * Ayaka Nishihori
+ * My Tran
+ * Taesoo Lee(Chase)
+ * Assignment 11
+ * Time Spent: 4 hours(Because we changed everything according to this new structure and reading program to understand)
+
  */
 
 #include <iostream>
@@ -14,6 +19,8 @@
 #include <string>
 #include <cmath>
 #include <ctype.h> // for character handling (upper casing, etc.)
+#include <vector>
+
 using namespace std;
 
 // global constants
@@ -22,24 +29,29 @@ const int NUMBER_OF_ROOMS = 6; // number of rooms per building
 const int NUMBER_OF_BUILDINGS = 4; // number of total buildings
 const int NUMBER_OF_IDS = 100; // total number of IDs our data file will hold
 
+struct customer{
+	string name;
+	int id;
+};
+
 // function prototypes
 void loadRooms();
 int getOption();
-void checkIn();
+void checkIn(customer[]);//!
 void printReceipt(double, int = 1);
-void checkOut();
+void checkOut(customer[]);//!
 void getPricing();
 void getOverallStatus();
-void quitProgram();
+void quitProgram(customer[]);//!
 void getRoom(int &, int &, string = "Building? ", string = "Room? ");
 bool isValidRoom(int, int);
 void hotelOperationsSummary();
-int search(int[NUMBER_OF_IDS], int);
-int search(string[NUMBER_OF_IDS], string);
-void sortCustomerData();
-void loadCustomerData();
-int getID();
-int makeID();
+int search(int, customer[]);//!
+int search(string, customer[]);//!
+void sortCustomerData(customer[]);//!
+void loadCustomerData(customer[]);//!
+int getID(customer[]);//!
+int makeID(customer[]);//!
 void findRoom(int, int &, int &);
 void log(string);
 double * getBuildingPrices();
@@ -47,21 +59,27 @@ double * getBuildingPrices();
 // file streams
 ofstream logOut;
 
+//Trying out
+
+
+
 // global variables (arrays)
 int rooms[NUMBER_OF_BUILDINGS][NUMBER_OF_ROOMS]; // two-dimensional array
 double * buildingPrices = getBuildingPrices();
-int customerIDs[NUMBER_OF_IDS];
-string customerNames[NUMBER_OF_IDS];
+
 int lastID = 0;
+
 
 int main() {
     // variable
+	customer customers[NUMBER_OF_IDS];
+
 	bool mainLoop = true;
 
 	// setup
 	logOut.open("Log.txt", ios::app); // will append to the log file
 	loadRooms();
-	loadCustomerData();
+	loadCustomerData(customers);
 
     // print greeting
     cout << "Hello World!" << endl; // it's a classic
@@ -74,15 +92,15 @@ int main() {
 
 		// option tree
 		if (option == 1) { // checkin
-			checkIn();
+			checkIn(customers);
 		} else if (option == 2) { // checkout
-			checkOut();
+			checkOut(customers);
 		} else if (option == 3) { //price of the rooms
 			getPricing();
 		} else if (option == 4) { // overall status
 			getOverallStatus();
 		} else if (option == 5){ // quit program
-			quitProgram();
+			quitProgram(customers);
 			mainLoop = false;
 		}
 	} // end of while loop
@@ -151,7 +169,7 @@ void loadRooms() {
 // Loads each customer's data by opening a data file that is    *
 // continuously updated each time this program is run.          *
 //***************************************************************
-void loadCustomerData() {
+void loadCustomerData(customer c[]) {
     // file streams
 	ifstream dataIn;
 	dataIn.open("customerData.txt"); // contains customer data
@@ -162,8 +180,10 @@ void loadCustomerData() {
 	while (dataIn >> name) {
         
 		dataIn >> ID;
-        customerIDs[lastID] = ID;
-		customerNames[lastID] = name;
+		c[lastID].id = ID;
+		c[lastID].name = name;
+
+
         
         lastID++;
 	}
@@ -209,7 +229,7 @@ int getOption() {
 // a receipt for them, which includes the price per day,        *
 // subtotal, taxes, and overall total.                          *
 //***************************************************************
-void checkIn() {
+void checkIn(customer c[]) {
 	// variables
 	int building, room; // building number and room number, respectively
 	int days; // days at hotel
@@ -243,9 +263,9 @@ void checkIn() {
 	} while (true);
 
 	if (tolower(before) == 'y') {
-		rooms[building][room] = getID(); // save their id number to their room
+		rooms[building][room] = getID(c); // save their id number to their room
 	} else {
-		rooms[building][room] = makeID(); // create new id number and save to their room
+		rooms[building][room] = makeID(c); // create new id number and save to their room
 	}
     
     printReceipt(buildingPrices[building], days);
@@ -257,7 +277,7 @@ void checkIn() {
 // Asks customer for first name and returns their customer ID   *
 // if their name was found.                                     *
 //***************************************************************
-int getID() {
+int getID(customer c[]) {
 	do {
         // prompt/user input
 		string name;
@@ -265,9 +285,9 @@ int getID() {
 		cin >> name;
 
 		// find where the name is stored
-		int index = search(customerNames, name);
+		int index = search(name, c);
 
-		if (index != -1) return customerIDs[index];
+		if (index != -1) return c[index].id;
 		else cout << "Sorry, that name was not found in our database." << endl;
 	} while (true);
 }
@@ -276,7 +296,7 @@ int getID() {
 // Definition of function makeID.                               *
 // Makes a new customer ID based off their name and returns ID. *
 //***************************************************************
-int makeID() {
+int makeID(customer c[]) {
 	int ID = 0;
 	char name[30];
 	
@@ -285,7 +305,7 @@ int makeID() {
 		cout << "What is your first name? ";
 		cin >> name;
 
-		if (search(customerNames, name) == -1) break;
+		if (search(name, c) == -1) break;
 
 		cout << "Sorry, that name is in use." << endl;
 	} while (true);
@@ -298,16 +318,16 @@ int makeID() {
             break;
 
 	// check to see if this ID number has been used
-	while (search(customerIDs, ID) != -1) ID++;
+	while (search(ID, c) != -1) ID++;
 
 	// update the arrays
-	customerIDs[lastID] = ID;
-	customerNames[lastID] = name;
+	c[lastID].id = ID;
+	c[lastID].name = name;
     
     lastID++;
 
 	// sort the arrays
-	sortCustomerData();
+	sortCustomerData(c);
 
 	return ID;
 }
@@ -318,19 +338,16 @@ int makeID() {
 // sort method and also exchanges the proper customer IDs       *
 // in a different array to stay parallel with customerNames.    *
 //***************************************************************
-void sortCustomerData() {
+void sortCustomerData(customer c[]) {
 	bool exchange;
 	do {
 		exchange = false;
 		for (int i = 0; i < (lastID - 1); i++) {
-			if (customerNames[i] > customerNames[i + 1]) {
-				string name = customerNames[i];
-				customerNames[i] = customerNames[i + 1];
-				customerNames[i + 1] = name;
-                
-				int ID = customerIDs[i];
-				customerIDs[i] = customerIDs[i + 1];
-				customerIDs[i + 1] = ID;
+			if (c[i].name > c[i + 1].name) {
+				string name = c[i].name;
+				c[i].name = c[i + 1].name;
+				c[i + 1].name = name;
+
 				exchange = true;
 			}
 		}
@@ -343,8 +360,8 @@ void sortCustomerData() {
 // the index where the given ID number is stored. Otherwise -1  *
 // is returned.                                                 *
 //***************************************************************
-int search(int array[NUMBER_OF_IDS], int target) {
-	for (int i = 0; i < NUMBER_OF_IDS; i++) if (array[i] == target) return i;
+int search(int target, customer c[]) {
+	for (int i = 0; i < NUMBER_OF_IDS; i++) if (c[i].id == target) return i;
 	return -1;
 }
 
@@ -354,12 +371,12 @@ int search(int array[NUMBER_OF_IDS], int target) {
 // the index where the given name is stored. Otherwise -1       *
 // is returned.                                                 *
 //***************************************************************
-int search(string array[NUMBER_OF_IDS], string target) {
+int search(string target, customer c[]) {
 	int start = 0, end = lastID - 1, mid;
 	while (start <= end) {
 		mid = (start + end) / 2;
-		if (array[mid] == target) return mid;
-		if (array[mid] > target) end = mid - 1;
+		if (c[mid].name == target) return mid;
+		if (c[mid].name > target) end = mid - 1;
 		else start = mid + 1;
 	}
 
@@ -399,11 +416,11 @@ void printReceipt(double price, int numDays) {
 // validates it, and proceeds to successfully check them out    *
 // and update the room status.                                  *
 //***************************************************************
-void checkOut() {
+void checkOut(customer c[]) {
 	int building, room; // building number and room number, respectively
 
 	do {
-		findRoom(getID(), building, room);
+		findRoom(getID(c), building, room);
 		if (room != -1) break;
 		else cout << "Sorry, you are not checked in." << endl;
 	} while (true);
@@ -476,7 +493,7 @@ void getOverallStatus() {
 // up-to-date status of all rooms to a file. Returns a false    *
 // boolean.                                                     *
 //***************************************************************
-void quitProgram() {
+void quitProgram(customer c[]) {
 	cout << "Ending program..." << endl << endl;
 	log("Program ended."); // record program has ended in the log
 
@@ -495,8 +512,8 @@ void quitProgram() {
 	ofstream dataOut;
 	dataOut.open("customerData.txt");
 	for (int i = 0; i < lastID; i++) {
-		dataOut << customerNames[i] << endl;
-		dataOut << customerIDs[i] << endl;
+		dataOut << c[i].name << endl;
+		dataOut << c[i].id << endl;
 	}
 	dataOut.close();
 }
