@@ -7,8 +7,8 @@
 * Ayaka Nishihori
 * My Tran
 * Taesoo Lee(Chase)
-* Assignment 11
-* Time Spent: 4 hours(Because we changed everything according to this new structure and reading program to understand)
+* Assignment 13
+* Time Spent: 1 hours
 */
 
 #include <iostream>
@@ -18,6 +18,9 @@
 #include <cmath>
 #include <ctype.h> // for character handling (upper casing, etc.)
 #include <vector>
+#include "room.h"
+#include "customer.h"
+
 
 using namespace std;
 
@@ -27,19 +30,8 @@ const int NUMBER_OF_ROOMS = 6; // number of rooms per building
 const int NUMBER_OF_BUILDINGS = 4; // number of total buildings
 const int NUMBER_OF_IDS = 100; // total number of IDs our data file will hold
 
-//Sturct for Customer. Change this to class later
-struct customer{
-	string name;
-	int id;
-};
 
-//Sturct for room. Change this to class later
-struct room{
-	char building;
-	//int roomNumber; //This Member might be useless. Change it in the future if necessary
-	int customer;
-	double price;
-};
+
 
 
 // function prototypes
@@ -135,9 +127,9 @@ int main() {
 void setRooms(room r[]){
 	for (int i = 0; i < NUMBER_OF_BUILDINGS; i++){
 		for (int j = 0; j < NUMBER_OF_ROOMS; j++){
-			r[i*NUMBER_OF_ROOMS + j].building = 65 + NUMBER_OF_BUILDINGS;
+			r[i*NUMBER_OF_ROOMS + j].setBuilding(65 + NUMBER_OF_BUILDINGS);
 			//r[i*NUMBER_OF_ROOMS + j].roomNumber = j + 1;
-			r[i*NUMBER_OF_ROOMS + j].price = (NUMBER_OF_BUILDINGS + 1) * 100;
+			r[i*NUMBER_OF_ROOMS + j].setPrice((NUMBER_OF_BUILDINGS + 1) * 100);
 		}
 	}
 }
@@ -162,7 +154,7 @@ void loadRooms(room r[]) {
 		for (int b = 0; b < NUMBER_OF_BUILDINGS*NUMBER_OF_ROOMS; b++) {
 			int roomStatus;
 			stateIn >> roomStatus;
-			r[b].customer = roomStatus; // initialize array with room status
+			r[b].setCustomer(roomStatus); // initialize array with room status
 		}
 
 	}
@@ -170,7 +162,7 @@ void loadRooms(room r[]) {
 		log("Loaded status of rooms from last run.");
 
 		for (int b = 0; b < NUMBER_OF_BUILDINGS*NUMBER_OF_ROOMS; b++) {
-			r[b].customer = -1; // initialize array with -1
+			r[b].setCustomer(-1); // initialize array with -1
 		}
 	}
 	stateIn.close(); // close the file
@@ -192,9 +184,8 @@ void loadCustomerData(customer c[]) {
 	while (dataIn >> name) {
 
 		dataIn >> ID;
-		c[lastID].id = ID;
-		c[lastID].name = name;
-
+		c[lastID].setID(ID);
+		c[lastID].setName(name);
 
 
 		lastID++;
@@ -249,7 +240,7 @@ void checkIn(customer c[],room r[]) {
 
 	do {
 		getRoom(building, room);
-		if (r[building*NUMBER_OF_ROOMS+room].customer == -1) break; // check if this room is free
+		if (r[building*NUMBER_OF_ROOMS+room].getCustomer() == -1) break; // check if this room is free
 		else cout << "That room is occupied." << endl;
 	} while (true);
 
@@ -273,12 +264,12 @@ void checkIn(customer c[],room r[]) {
 	} while (true);
 
 	if (tolower(before) == 'y') {
-		r[building*NUMBER_OF_ROOMS+room].customer = getID(c); // save their id number to their room
+		r[building*NUMBER_OF_ROOMS+room].setCustomer(getID(c)); // save their id number to their room
 	}
 	else {
-		r[building*NUMBER_OF_ROOMS + room].customer = makeID(c); // create new id number and save to their room
+		r[building*NUMBER_OF_ROOMS + room].setCustomer(makeID(c)); // create new id number and save to their room
 	}
-	double price = r[building*NUMBER_OF_ROOMS + room].price;
+	double price = r[building*NUMBER_OF_ROOMS + room].getPrice();
 	printReceipt(price, days);
 	log("Checkin process completed."); // record checkin on the log file
 }
@@ -298,7 +289,7 @@ int getID(customer c[]) {
 		// find where the name is stored
 		int index = search(name, c);
 
-		if (index != -1) return c[index].id;
+		if (index != -1) return c[index].getID();
 		else cout << "Sorry, that name was not found in our database." << endl;
 	} while (true);
 }
@@ -332,8 +323,8 @@ int makeID(customer c[]) {
 	while (search(ID, c) != -1) ID++;
 
 	// update the arrays
-	c[lastID].id = ID;
-	c[lastID].name = name;
+	c[lastID].setID(ID);
+	c[lastID].setName(name);
 
 	lastID++;
 
@@ -355,7 +346,7 @@ void sortCustomerData(customer c[]) {
 	do {
 		exchange = false;
 		for (int i = 0; i < (lastID - 1); i++) {
-			if (c[i].name > c[i + 1].name) {
+			if (c[i].getName() > c[i + 1].getName()) {
 				temp = c[i];
 				c[i]= c[i + 1];
 				c[i + 1] = temp;
@@ -373,7 +364,7 @@ void sortCustomerData(customer c[]) {
 // is returned.                                                 *
 //***************************************************************
 int search(int target, customer c[]) {
-	for (int i = 0; i < NUMBER_OF_IDS; i++) if (c[i].id == target) return i;
+	for (int i = 0; i < NUMBER_OF_IDS; i++) if (c[i].getID() == target) return i;
 	return -1;
 }
 
@@ -387,8 +378,8 @@ int search(string target, customer c[]) {
 	int start = 0, end = lastID - 1, mid;
 	while (start <= end) {
 		mid = (start + end) / 2;
-		if (c[mid].name == target) return mid;
-		if (c[mid].name > target) end = mid - 1;
+		if (c[mid].getName() == target) return mid;
+		if (c[mid].getName() > target) end = mid - 1;
 		else start = mid + 1;
 	}
 
@@ -441,7 +432,7 @@ void checkOut(customer c[], room r[]) {
 	cout << static_cast<char>(building + 65) << (room + 1) << "." << endl;
 	cout << "Please come again soon!" << endl;
 
-	r[building*NUMBER_OF_ROOMS + room].customer = -1; // mark this room as vacant now
+	r[building*NUMBER_OF_ROOMS + room].setCustomer(-1); // mark this room as vacant now
 
 	log("Checkout process completed."); // record checkout on the log file
 }
@@ -454,7 +445,7 @@ void checkOut(customer c[], room r[]) {
 void findRoom(int ID, int & building, int & roomNum, room r[]) {
 	for (int i = 0; i < NUMBER_OF_BUILDINGS; i++) {
 		for (int j = 0; j < NUMBER_OF_ROOMS; j++) {
-			if (r[i*NUMBER_OF_ROOMS+j].customer == ID) {
+			if (r[i*NUMBER_OF_ROOMS+j].getCustomer() == ID) {
 				building = i;
 				roomNum= j;
 				return;
@@ -476,7 +467,7 @@ void getPricing(room r[]) {
 
 	for (int b = 0; b < NUMBER_OF_BUILDINGS; b++) {
 		cout << "    Building " << static_cast<char>(b + 65);
-		cout << " is $" << r[b*NUMBER_OF_ROOMS+1].price << endl;
+		cout << " is $" << r[b*NUMBER_OF_ROOMS+1].getPrice() << endl;
 	}
 
 	cout << endl;
@@ -492,7 +483,7 @@ void getOverallStatus(room x[]) {
 		cout << "Building " << static_cast<char>(b + 65) << endl;
 		for (int r = 0; r < NUMBER_OF_ROOMS; r++) {
 			cout << "    Room " << r + 1 << " is ";
-			cout << (x[b*NUMBER_OF_ROOMS+r].customer == -1 ? "Vacant" : "Occupied") << endl;
+			cout << (x[b*NUMBER_OF_ROOMS+r].getCustomer() == -1 ? "Vacant" : "Occupied") << endl;
 		}
 	}
 
@@ -516,7 +507,7 @@ void quitProgram(customer c[], room x[]) {
 	// save the current status of all rooms to a file
 	for (int b = 0; b < NUMBER_OF_BUILDINGS; b++) {
 		for (int r = 0; r < NUMBER_OF_ROOMS; r++) {
-			stateOut << x[b*NUMBER_OF_ROOMS+r].customer << endl;
+			stateOut << x[b*NUMBER_OF_ROOMS+r].getCustomer() << endl;
 		}
 	}
 
@@ -525,8 +516,8 @@ void quitProgram(customer c[], room x[]) {
 	ofstream dataOut;
 	dataOut.open("customerData.txt");
 	for (int i = 0; i < lastID; i++) {
-		dataOut << c[i].name << endl;
-		dataOut << c[i].id << endl;
+		dataOut << c[i].getName() << endl;
+		dataOut << c[i].getID() << endl;
 	}
 	dataOut.close();
 }
@@ -604,9 +595,9 @@ void hotelOperationsSummary(room x[])
 	for (int b = 0; b < NUMBER_OF_BUILDINGS; b++) {
 		for (int r = 0; r < NUMBER_OF_ROOMS; r++) {
 
-			if (x[b*NUMBER_OF_ROOMS+r].customer != -1) { // if hotel room is occupied
+			if (x[b*NUMBER_OF_ROOMS+r].getCustomer() != -1) { // if hotel room is occupied
 				totalRoomsCheckedOut++;
-				income += (x[b*NUMBER_OF_ROOMS+1].price * (1 + TAX_RATE)); // add cost of one night
+				income += (x[b*NUMBER_OF_ROOMS+1].getPrice() * (1 + TAX_RATE)); // add cost of one night
 			}
 		}
 	}
