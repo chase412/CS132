@@ -15,6 +15,10 @@ customer::customer(string nm, int x){
 	name = nm;
 	id = x;
 }
+customer::customer(customer& obj){
+	name = obj.name;
+	id = obj.id;
+}
 customer::~customer(){
 }
 void customer::setName(string x) {
@@ -39,7 +43,4 @@ bool customer::operator ==(const customer &right){ //Operator ==
 	}
 	return check;
 }
-istream operator>> (istream &str, customer &c)
-{
-	return str;
-}
+

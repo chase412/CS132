@@ -21,6 +21,7 @@ public:
 	room();
 	room(char, int, double);
 	~room();
+	room(room&);
 	bool operator >(const room &);
 	bool operator <(const room &);
 	bool operator ==(const room&);

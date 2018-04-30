@@ -19,7 +19,12 @@ room::room(char b, int c, double p){
 room::~room(){
 
 }
-
+//Copy Constructor
+room::room(room&obj){
+	building = obj.building;
+	customer = obj.customer;
+	price = obj.price;
+}
 
 bool room::operator >(const room& right){
 	bool check;

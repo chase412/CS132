@@ -18,13 +18,14 @@ private:
 public:
 	customer();
 	customer(string, int);
+	customer(customer&);
 	bool operator ==(const customer &);
 	~customer();
 	void setName(string);
 	void setID(int);
 	int getID();
 	string getName();
-	friend istream operator>> (istream &, customer &);
+	friend ostream& operator<< (ostream &, customer &);
 };
 
 

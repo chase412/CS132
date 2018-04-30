@@ -69,6 +69,16 @@ ofstream logOut;
 int lastID = 0;
 
 
+
+ostream& operator<< (ostream &strm, customer &obj){
+	strm << obj.name << " : " << obj.id;
+	return strm;
+}
+
+
+
+
+
 int main() {
 	// variable
 	// Make this as global variables later Customers and Rooms
