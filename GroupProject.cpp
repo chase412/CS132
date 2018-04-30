@@ -39,7 +39,7 @@ void loadRooms(room[]);
 int getOption();
 void checkIn(customer[], room[]);//!
 void printReceipt(double, int);
-void checkOut(customer[],room[]);//!
+void checkOut(customer[], room[]);//!
 void getPricing(room[]);
 void getOverallStatus(room[]);
 void quitProgram(customer[], room[]);//!
@@ -93,10 +93,10 @@ int main() {
 
 		// option tree
 		if (option == 1) { // checkin
-			checkIn(customers,rooms);
+			checkIn(customers, rooms);
 		}
 		else if (option == 2) { // checkout
-			checkOut(customers,rooms);
+			checkOut(customers, rooms);
 		}
 		else if (option == 3) { //price of the rooms
 			getPricing(rooms);
@@ -176,7 +176,9 @@ void loadRooms(room r[]) {
 void loadCustomerData(customer c[]) {
 	// file streams
 	ifstream dataIn;
+	
 	dataIn.open("customerData.txt"); // contains customer data
+
 
 	int ID; // customer's ID
 	string name; // customer's name
@@ -232,7 +234,7 @@ int getOption() {
 // a receipt for them, which includes the price per day,        *
 // subtotal, taxes, and overall total.                          *
 //***************************************************************
-void checkIn(customer c[],room r[]) {
+void checkIn(customer c[], room r[]) {
 	// variables
 	int building, room; // building number and room number, respectively
 	int days; // days at hotel
@@ -240,7 +242,7 @@ void checkIn(customer c[],room r[]) {
 
 	do {
 		getRoom(building, room);
-		if (r[building*NUMBER_OF_ROOMS+room].getCustomer() == -1) break; // check if this room is free
+		if (r[building*NUMBER_OF_ROOMS + room].getCustomer() == -1) break; // check if this room is free
 		else cout << "That room is occupied." << endl;
 	} while (true);
 
@@ -264,7 +266,7 @@ void checkIn(customer c[],room r[]) {
 	} while (true);
 
 	if (tolower(before) == 'y') {
-		r[building*NUMBER_OF_ROOMS+room].setCustomer(getID(c)); // save their id number to their room
+		r[building*NUMBER_OF_ROOMS + room].setCustomer(getID(c)); // save their id number to their room
 	}
 	else {
 		r[building*NUMBER_OF_ROOMS + room].setCustomer(makeID(c)); // create new id number and save to their room
@@ -348,7 +350,7 @@ void sortCustomerData(customer c[]) {
 		for (int i = 0; i < (lastID - 1); i++) {
 			if (c[i].getName() > c[i + 1].getName()) {
 				temp = c[i];
-				c[i]= c[i + 1];
+				c[i] = c[i + 1];
 				c[i + 1] = temp;
 
 				exchange = true;
@@ -445,9 +447,9 @@ void checkOut(customer c[], room r[]) {
 void findRoom(int ID, int & building, int & roomNum, room r[]) {
 	for (int i = 0; i < NUMBER_OF_BUILDINGS; i++) {
 		for (int j = 0; j < NUMBER_OF_ROOMS; j++) {
-			if (r[i*NUMBER_OF_ROOMS+j].getCustomer() == ID) {
+			if (r[i*NUMBER_OF_ROOMS + j].getCustomer() == ID) {
 				building = i;
-				roomNum= j;
+				roomNum = j;
 				return;
 			}
 		}
@@ -467,7 +469,7 @@ void getPricing(room r[]) {
 
 	for (int b = 0; b < NUMBER_OF_BUILDINGS; b++) {
 		cout << "    Building " << static_cast<char>(b + 65);
-		cout << " is $" << r[b*NUMBER_OF_ROOMS+1].getPrice() << endl;
+		cout << " is $" << r[b*NUMBER_OF_ROOMS + 1].getPrice() << endl;
 	}
 
 	cout << endl;
@@ -483,7 +485,7 @@ void getOverallStatus(room x[]) {
 		cout << "Building " << static_cast<char>(b + 65) << endl;
 		for (int r = 0; r < NUMBER_OF_ROOMS; r++) {
 			cout << "    Room " << r + 1 << " is ";
-			cout << (x[b*NUMBER_OF_ROOMS+r].getCustomer() == -1 ? "Vacant" : "Occupied") << endl;
+			cout << (x[b*NUMBER_OF_ROOMS + r].getCustomer() == -1 ? "Vacant" : "Occupied") << endl;
 		}
 	}
 
@@ -507,7 +509,7 @@ void quitProgram(customer c[], room x[]) {
 	// save the current status of all rooms to a file
 	for (int b = 0; b < NUMBER_OF_BUILDINGS; b++) {
 		for (int r = 0; r < NUMBER_OF_ROOMS; r++) {
-			stateOut << x[b*NUMBER_OF_ROOMS+r].getCustomer() << endl;
+			stateOut << x[b*NUMBER_OF_ROOMS + r].getCustomer() << endl;
 		}
 	}
 
@@ -595,9 +597,9 @@ void hotelOperationsSummary(room x[])
 	for (int b = 0; b < NUMBER_OF_BUILDINGS; b++) {
 		for (int r = 0; r < NUMBER_OF_ROOMS; r++) {
 
-			if (x[b*NUMBER_OF_ROOMS+r].getCustomer() != -1) { // if hotel room is occupied
+			if (x[b*NUMBER_OF_ROOMS + r].getCustomer() != -1) { // if hotel room is occupied
 				totalRoomsCheckedOut++;
-				income += (x[b*NUMBER_OF_ROOMS+1].getPrice() * (1 + TAX_RATE)); // add cost of one night
+				income += (x[b*NUMBER_OF_ROOMS + 1].getPrice() * (1 + TAX_RATE)); // add cost of one night
 			}
 		}
 	}

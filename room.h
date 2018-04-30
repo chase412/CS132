@@ -7,6 +7,10 @@
 
 
 using namespace std;
+
+
+
+
 class room {
 private:
 	char building;
@@ -15,12 +19,19 @@ private:
 
 public:
 	room();
+	room(char, int, double);
+	~room();
+	bool operator >(const room &);
+	bool operator <(const room &);
+	bool operator ==(const room&);
 	void setBuilding(char);
 	void setCustomer(int);
 	void setPrice(double);
 	char getBuilding();
 	int getCustomer();
 	double getPrice();
+	
+	
 };
 
 #endif
