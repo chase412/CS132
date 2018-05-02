@@ -7,7 +7,7 @@ using namespace std;
 //This is a resource file for room class
 
 room::room() {
-	building = '-1';
+	building = 'z';
 	customer = -1;
 	price = -1;
 }
@@ -44,9 +44,9 @@ bool room::operator <(const room& right){ //Operator <
 		check = false;
 	return check;
 }
-bool room::operator==(const room& right){
+bool room::operator==(int right){
 	bool check;
-	if (building == right.building&&price == right.price&&customer == right.customer)
+	if (customer==right)
 		check = true;
 	else
 		check = false;

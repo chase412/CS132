@@ -7,8 +7,10 @@
 * Ayaka Nishihori
 * My Tran
 * Taesoo Lee(Chase)
-* Assignment 13
-* Time Spent: 1 hours
+* Assignment 14
+* Time Spent: 2 hours
+* Using redefined ofstream, ==, <, and another == for different class
+* Made destructor and copy constructor
 */
 
 #include <iostream>
@@ -69,11 +71,6 @@ ofstream logOut;
 int lastID = 0;
 
 
-
-ostream& operator<< (ostream &strm, customer &obj){
-	strm << obj.name << " : " << obj.id;
-	return strm;
-}
 
 
 
@@ -252,7 +249,9 @@ void checkIn(customer c[], room r[]) {
 
 	do {
 		getRoom(building, room);
-		if (r[building*NUMBER_OF_ROOMS + room].getCustomer() == -1) break; // check if this room is free
+
+		//Using == operator for room
+		if (r[building*NUMBER_OF_ROOMS + room] == -1) break; // check if this room is free
 		else cout << "That room is occupied." << endl;
 	} while (true);
 
@@ -358,7 +357,7 @@ void sortCustomerData(customer c[]) {
 	do {
 		exchange = false;
 		for (int i = 0; i < (lastID - 1); i++) {
-			if (c[i].getName() > c[i + 1].getName()) {
+			if (c[i] > c[i + 1]) {
 				temp = c[i];
 				c[i] = c[i + 1];
 				c[i + 1] = temp;
@@ -376,7 +375,7 @@ void sortCustomerData(customer c[]) {
 // is returned.                                                 *
 //***************************************************************
 int search(int target, customer c[]) {
-	for (int i = 0; i < NUMBER_OF_IDS; i++) if (c[i].getID() == target) return i;
+	for (int i = 0; i < NUMBER_OF_IDS; i++) if (c[i] == target) return i; //Using == operator for customer
 	return -1;
 }
 
@@ -457,7 +456,7 @@ void checkOut(customer c[], room r[]) {
 void findRoom(int ID, int & building, int & roomNum, room r[]) {
 	for (int i = 0; i < NUMBER_OF_BUILDINGS; i++) {
 		for (int j = 0; j < NUMBER_OF_ROOMS; j++) {
-			if (r[i*NUMBER_OF_ROOMS + j].getCustomer() == ID) {
+			if (r[i*NUMBER_OF_ROOMS + j] == ID) { //Using Room == operator
 				building = i;
 				roomNum = j;
 				return;
@@ -495,8 +494,8 @@ void getOverallStatus(room x[]) {
 		cout << "Building " << static_cast<char>(b + 65) << endl;
 		for (int r = 0; r < NUMBER_OF_ROOMS; r++) {
 			cout << "    Room " << r + 1 << " is ";
-			cout << (x[b*NUMBER_OF_ROOMS + r].getCustomer() == -1 ? "Vacant" : "Occupied") << endl;
-		}
+			cout << (x[b*NUMBER_OF_ROOMS + r] == -1 ? "Vacant" : "Occupied") << endl;
+		}           //Using room == operator to check whether room is empty or not
 	}
 
 	cout << endl;
@@ -526,13 +525,26 @@ void quitProgram(customer c[], room x[]) {
 	stateOut.close();
 
 	ofstream dataOut;
+	//Using redefiend ofstream for customer
 	dataOut.open("customerData.txt");
 	for (int i = 0; i < lastID; i++) {
-		dataOut << c[i].getName() << endl;
-		dataOut << c[i].getID() << endl;
+		dataOut << c[i] << endl;
 	}
 	dataOut.close();
 }
+
+
+ofstream& operator<< (ofstream &strm, customer &obj){
+	strm << obj.name << endl;
+	strm << obj.id << endl;
+	return strm;
+}
+
+
+
+
+
+
 
 //***************************************************************
 // Definition of function getRoom.                              *

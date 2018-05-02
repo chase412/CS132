@@ -19,13 +19,14 @@ public:
 	customer();
 	customer(string, int);
 	customer(customer&);
-	bool operator ==(const customer &);
+	bool operator ==(int);
 	~customer();
 	void setName(string);
 	void setID(int);
 	int getID();
 	string getName();
-	friend ostream& operator<< (ostream &, customer &);
+	bool customer::operator >(const customer &);
+	friend ofstream& operator<< (ofstream &, customer &);
 };
 
 

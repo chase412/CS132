@@ -24,7 +24,7 @@ public:
 	room(room&);
 	bool operator >(const room &);
 	bool operator <(const room &);
-	bool operator ==(const room&);
+	bool operator ==(int);
 	void setBuilding(char);
 	void setCustomer(int);
 	void setPrice(double);

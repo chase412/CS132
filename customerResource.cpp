@@ -33,9 +33,18 @@ int customer::getID() {
 string customer::getName() {
 	return name;
 }
-bool customer::operator ==(const customer &right){ //Operator ==
+bool customer::operator >(const customer &right){
 	bool check;
-	if (id == right.id&&name==right.name){
+	if (name > right.name)
+		check = true;
+	else
+		check = false;
+
+	return check;
+}
+bool customer::operator ==(int right){ //Operator ==
+	bool check;
+	if (id == right){
 		check = true;
 	}
 	else{
