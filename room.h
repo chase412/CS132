@@ -20,11 +20,11 @@ private:
 public:
 	room();
 	room(char, int, double);
-	~room();
+	~room();//destructor
 	room(room&);
-	bool operator >(const room &);
-	bool operator <(const room &);
-	bool operator ==(int);
+	bool operator >(const room &);// > operator 
+	bool operator <(const room &);//< operator
+	bool operator ==(int);//operator ==
 	void setBuilding(char);
 	void setCustomer(int);
 	void setPrice(double);

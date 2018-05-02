@@ -11,14 +11,15 @@ room::room() {
 	customer = -1;
 	price = -1;
 }
-room::room(char b, int c, double p){
+room::room (char b, int c, double p){
 	building = b;
 	customer = c;
 	price = p;
 }
-room::~room(){
+room::~room(){ // destructor
 
 }
+
 //Copy Constructor
 room::room(room&obj){
 	building = obj.building;
@@ -26,7 +27,7 @@ room::room(room&obj){
 	price = obj.price;
 }
 
-bool room::operator >(const room& right){
+bool room::operator >(const room& right) {// opeartor >
 	bool check;
 	if (building > right.building){
 		check = true;
@@ -35,7 +36,7 @@ bool room::operator >(const room& right){
 		check = false;
 	return check;
 }
-bool room::operator <(const room& right){ //Operator <
+bool room::operator <(const room& right){ // Operator <
 	bool check;
 	if (building < right.building){
 		check = true;
@@ -44,7 +45,7 @@ bool room::operator <(const room& right){ //Operator <
 		check = false;
 	return check;
 }
-bool room::operator==(int right){
+bool room::operator==(int right){ // opeartor ==
 	bool check;
 	if (customer==right)
 		check = true;

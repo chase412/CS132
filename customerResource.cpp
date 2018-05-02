@@ -15,11 +15,11 @@ customer::customer(string nm, int x){
 	name = nm;
 	id = x;
 }
-customer::customer(customer& obj){
+customer::customer(customer& obj){ //copy constructor
 	name = obj.name;
 	id = obj.id;
 }
-customer::~customer(){
+customer::~customer(){ // destructor
 }
 void customer::setName(string x) {
 	name = x;
@@ -33,7 +33,7 @@ int customer::getID() {
 string customer::getName() {
 	return name;
 }
-bool customer::operator >(const customer &right){
+bool customer::operator >(const customer &right){// operator >
 	bool check;
 	if (name > right.name)
 		check = true;
