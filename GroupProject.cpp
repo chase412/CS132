@@ -111,7 +111,10 @@ int main() {
 		else if (option == 4) { // overall status
 			getOverallStatus(rooms);
 		}
-		else if (option == 5){ // quit program
+		else if (option == 5){ //For Employees still working on
+
+		}
+		else if (option == 6){ // quit program
 			quitProgram(customers, rooms);
 			mainLoop = false;
 		}
@@ -126,6 +129,11 @@ int main() {
 	system("pause");
 	return EXIT_SUCCESS;
 }
+
+
+
+
+
 
 //***************************************************************
 // Definition of function setRooms.                             *
@@ -214,7 +222,7 @@ int getOption() {
 	int menuSelection = 99999;
 	cout << endl << "*************************************" << endl;
 	// input loop
-	while (menuSelection > 5 || menuSelection < 1) {
+	while (menuSelection > 6 || menuSelection < 1) {
 		// check if the wrong option message should be printed
 		if (menuSelection != 99999) {
 			cout << "Please choose a valid option" << endl;
@@ -225,7 +233,8 @@ int getOption() {
 		cout << "	2. Checkout" << endl;
 		cout << "	3. Price" << endl;
 		cout << "	4. Overall Status" << endl;
-		cout << "	5. Quit" << endl;
+		cout << "        5. Employees" << endl;
+		cout << "	6. Quit" << endl;
 		cin >> menuSelection;
 		cin.ignore();
 		cout << endl;
