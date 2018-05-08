@@ -10,12 +10,24 @@ using namespace std;
 
 
 
-Employee:: Employee(){
+Employee::Employee(){
 	id = -1;
 	numHours = -1;
 	hourWage = -1;
 	start = -1;
 	end = -1;
+}
+Employee::Employee(int iD, double nh, double hw, int s, int e){
+	id = iD;
+	numHours = nh;
+	hourWage = hw;
+	start = s;
+	end = e;
+}
+
+void Employee::setSalary(double d)//setter
+{
+	hourWage = d;
 }
 int Employee::getId(){
 	return id;
@@ -39,7 +51,7 @@ void Employee::setHours(){
 		cout << "Input Start and End Time first" << endl;
 		return;
 	}
-	int startMinutes = (start / 100) * 60 + start % 100; 
+	int startMinutes = (start / 100) * 60 + start % 100;
 	//cout << "startMinutes: " << startMinutes << endl;
 	int endMinutes = (end / 100) * 60 + end % 100;
 	//cout << "endMinutes: " << endMinutes << endl;

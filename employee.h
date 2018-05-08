@@ -15,6 +15,8 @@ private:
 
 public:
 	Employee();
+	Employee(int, double, double, int, int);
+	void setSalary(double);//setter salary
 	int getId();
 	double getHours();
 	double getHourWage();
