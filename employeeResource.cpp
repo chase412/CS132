@@ -1,3 +1,5 @@
+//This is a resource file for employee
+
 #include <iostream>
 #include <string>
 #include "employee.h"
@@ -17,15 +19,8 @@ Employee::Employee(){
 	start = -1;
 	end = -1;
 }
-Employee::Employee(int iD, double nh, double hw, int s, int e){
-	id = iD;
-	numHours = nh;
-	hourWage = hw;
-	start = s;
-	end = e;
-}
 
-void Employee::setSalary(double d)//setter
+void Employee::setHourWage(double d)//setter
 {
 	hourWage = d;
 }
@@ -46,19 +41,23 @@ double Employee::getHourWage(){
 double Employee::getSalary(){ //This can be done better. After certain time, raise hourWage. 
 	return numHours*hourWage;
 }
-void Employee::setHours(){
+double Employee::calculateHours() {
 	if (end == -1 || start == -1){
 		cout << "Input Start and End Time first" << endl;
-		return;
+		return -1;
 	}
 	int startMinutes = (start / 100) * 60 + start % 100;
-	//cout << "startMinutes: " << startMinutes << endl;
 	int endMinutes = (end / 100) * 60 + end % 100;
-	//cout << "endMinutes: " << endMinutes << endl;
 	numHours = (endMinutes - startMinutes) / 60 + ((endMinutes - startMinutes) % 60) / 60.00;
-	//cout << "numHours: " << numHours << endl;
-
+	return numHours;
 }
+
+
+void Employee::setHours(double x) {
+	numHours = x;
+}
+
+
 void Employee::setStart(){
 	cout << "Start time?(HHMM Example: 1230) : ";
 	cin >> start;
@@ -85,5 +84,12 @@ void Employee::setEnd(){
 		hours = end / 100;
 		minute = end % 100;
 	}
-	setHours();
+	calculateHours();
+}
+
+int Employee::getStart() {
+	return start;
+}
+int Employee::getEnd() {
+	return end;
 }

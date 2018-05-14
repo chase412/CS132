@@ -1,5 +1,8 @@
-#ifndef BOSS_H
-#define BOSS_H
+//This is a header file for regular staff
+//Derived for employee
+
+#ifndef STAFF_h
+#define STAFF_h
 #include "employee.h"
 #include <iostream>
 #include <string>
@@ -9,16 +12,10 @@ using namespace std;
 class Staff :public Employee
 {
 private:
-	//double bonus;
-	int numberOfDays;
-	double paidTimeOff;
+
 
 public:
-	Staff();               //Constractor
-	Staff(int, double, int, double, double, int, int);  //defalt constructor
-	void setPaidTimeOff();
-	double getPaidTimeOff();
-	void setNumberOfDays();
-	int getNumberOfDays();
+	Staff();   //Default Constractor
+
 };
 #endif

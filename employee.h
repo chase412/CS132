@@ -1,3 +1,5 @@
+//This is a header file for employee
+
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 #include <iostream>
@@ -15,16 +17,17 @@ private:
 
 public:
 	Employee();
-	Employee(int, double, double, int, int);
-	void setSalary(double);//setter salary
+	void setHourWage(double);//setter salary
 	int getId();
 	double getHours();
 	double getHourWage();
 	double getSalary();
-	void setHours();
+	virtual double calculateHours();
+	void setHours(double);
 	void setStart();
 	void setEnd();
-
+	int getStart();
+	int getEnd();
 
 };
 

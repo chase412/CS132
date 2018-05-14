@@ -25,7 +25,7 @@ public:
 	void setID(int);
 	int getID();
 	string getName();
-	bool customer::operator >(const customer &);// > operator
+	bool operator >(const customer &);// > operator
 	friend ofstream& operator<< (ofstream &, customer &);// << operator 
 };
 
