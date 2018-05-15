@@ -266,6 +266,7 @@ void loadCustomerData(customer c[]) {
 // numerical choice. Input validation on their selection is     *
 // present.                                                     *
 //***************************************************************
+/*
 int getOption() {
 	int menuSelection = 99999;
 	cout << endl << "*************************************" << endl;
@@ -287,6 +288,49 @@ int getOption() {
 		cin.ignore();
 		cout << endl;
 	} // end of while loop
+
+	return menuSelection;
+}*/
+//***************************************************************
+//Use exception for user input option.                          *
+//***************************************************************
+int getOption() {
+	int menuSelection = 99999;
+	cout << endl << "*************************************" << endl;
+	// input loop
+
+
+	bool tryAgain = true;
+	customer cus;
+
+	// prompt/user input
+	cout << "How may we assist you?" << endl;
+	cout << "	1. Checkin" << endl;
+	cout << "	2. Checkout" << endl;
+	cout << "	3. Price" << endl;
+	cout << "	4. Overall Status" << endl;
+	cout << "        5. Employees" << endl;
+	cout << "	6. Quit" << endl;
+	cin >> menuSelection;
+	cin.ignore();
+	cout << endl;
+
+
+	while (tryAgain)
+	{
+		try
+		{
+			cus.option(menuSelection);
+			tryAgain = false;
+		}
+		catch (customer::ErrorOption)
+		{
+			cout << "Please choose a valid option" << endl;
+			cin >> menuSelection;
+			cin.ignore();
+			cout << endl;
+		}
+	}
 
 	return menuSelection;
 }

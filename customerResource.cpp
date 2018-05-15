@@ -52,4 +52,12 @@ bool customer::operator ==(int right){ //Operator ==
 	}
 	return check;
 }
-
+void customer::option(int o)//For Option 
+{
+	if (o <= 6 && o >= 1)
+	{
+		inputOtion = o;
+	}
+	else
+		throw ErrorOption();
+}

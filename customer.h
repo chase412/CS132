@@ -13,6 +13,8 @@ class customer {
 private:
 	string name;
 	int id;
+	int inputOtion;
+
 
 
 public:
@@ -27,6 +29,12 @@ public:
 	string getName();
 	bool operator >(const customer &);// > operator
 	friend ofstream& operator<< (ofstream &, customer &);// << operator 
+
+
+	void option(int);//For Option 
+	class ErrorOption{};//For exception
+
+	
 };
 
 
