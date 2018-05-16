@@ -61,26 +61,25 @@ void setRooms(room[]);
 ofstream logOut;
 
 
+
+
+
+//For extra credit template
+template <class T1,class T2>
+T1 multiply(T1 n1, T2 n2) {
+	return n1*n2;
+}
+
+
+
 // global variables (This will be field later on in the project
 
 int lastID = 0;
 
 int main() {
 
-	//This part is just to demonstrate derived classes and virtual member function
-	Boss b;
-	b.setStart();
-	b.setEnd();
-	b.calculateHours();
-	//Boss gets extra hour. This uses virtual
-	cout << b.getHours() << endl;
+	cout << "Template example : " << multiply(1.2, 1) << endl;
 
-	Employee a;
-	a.setStart();
-	a.setEnd();
-	a.calculateHours();
-	cout << a.getHours() << endl;
-	//Employee does not get extra hour
 
 	// variable
 	// Make this as global variables later Customers and Rooms
