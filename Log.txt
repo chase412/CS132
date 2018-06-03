@@ -1,10 +1,22 @@
 Timestamp: Loaded status of rooms from last run.
+Timestamp: Checkin process completed.
+Timestamp: Checkout process completed.
+Timestamp: Program ended.
 Timestamp: Loaded status of rooms from last run.
+Timestamp: Program ended.
+Timestamp: Loaded status of rooms from last run.
+Timestamp: Loaded status of rooms from last run.
+Timestamp: Loaded status of rooms from last run.
+Timestamp: Loaded status of rooms from last run.
+Timestamp: Checkin process completed.
+Timestamp: Checkout process completed.
+Timestamp: Program ended.
+Timestamp: Loaded status of rooms from last run.
+Timestamp: Program ended.
 Timestamp: Loaded status of rooms from last run.
 Timestamp: Program ended.
 Timestamp: Loaded status of rooms from last run.
 Timestamp: Checkin process completed.
 Timestamp: Checkout process completed.
-Timestamp: Loaded status of rooms from last run.
 Timestamp: Program ended.
 Timestamp: Loaded status of rooms from last run.

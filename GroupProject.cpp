@@ -7,9 +7,10 @@
 * Ayaka Nishihori
 * My Tran
 * Taesoo Lee(Chase)
-* Assignment 15
+* Assignment 18
 * Time Spent: 2 hours
 * Made Derived class boss and staff
+* Use Dynamic Queue insead of Array 
 * Used simple boss and employee object to demonstarte virtual function
 */
 
@@ -25,7 +26,8 @@
 #include "employee.h"
 #include "boss.h"
 #include "staff.h"
-
+#include "payLinked.h"
+#include "DynamicQueue.h"
 using namespace std;
 
 // global constants
@@ -61,26 +63,10 @@ void setRooms(room[]);
 ofstream logOut;
 
 
-
-
-
-//For extra credit template
-template <class T1,class T2>
-T1 multiply(T1 n1, T2 n2) {
-	return n1*n2;
-}
-
-
-
-// global variables (This will be field later on in the project
-
+// global variables (This will be field later on in the project)
 int lastID = 0;
-
+DynamicQueue<customer> customerlist;//Using Dynamic Queue
 int main() {
-
-	cout << "Template example : " << multiply(1.2, 1) << endl;
-
-
 	// variable
 	// Make this as global variables later Customers and Rooms
 	customer customers[NUMBER_OF_IDS];
@@ -93,6 +79,11 @@ int main() {
 	loadRooms(rooms);
 	loadCustomerData(customers);
 	setRooms(rooms);
+
+	cout << "Current customers : " << endl;
+	customerlist.display();//Using Dynamic Queue display method
+
+
 	// print greeting
 	cout << "Hello World!" << endl; // it's a classic
 	cout << "Welcome to our hotel!\n" << endl;
@@ -162,26 +153,6 @@ int option() {
 	return menuSelection;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //***************************************************************
 // Definition of function setRooms.                             *
 // Set Room's building, room number, and price                  *
@@ -246,11 +217,12 @@ void loadCustomerData(customer c[]) {
 	string name; // customer's name
 
 	while (dataIn >> name) {
-
+		
 		dataIn >> ID;
+		customer temp(name, ID);
 		c[lastID].setID(ID);
 		c[lastID].setName(name);
-
+		customerlist.enqueue(temp);//Using Dynamic Queue "enqueue"
 
 		lastID++;
 	}
